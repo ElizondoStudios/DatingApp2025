@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.28.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.8" />
@@ -29,13 +30,13 @@
     <Delete Files="@(FilesToDelete)" />
   </Target>
   <Target Name="NSwag" BeforeTargets="CoreCompile;PrepareResource">
-    <Exec Command="$(NSwagExe_Net90) run /runtime:Net90 /variables:OutputPath=$(MSBuildProjectDirectory)/$(IntermediateOutputPath)" WorkingDirectory="../../nswag" />
+    <Exec Command="$(NSwagExe_Net90) run /runtime:Net90 &quot;/variables:OutputPath=$(MSBuildProjectDirectory.Replace('\','/'))$(IntermediateOutputPath.Replace('\','/'))&quot;" WorkingDirectory="../../nswag" />
     <ItemGroup>
       <Compile Include="$(IntermediateOutputPath)/*.generated.cs" />
     </ItemGroup>
   </Target>
   <Target Name="NSwagSpec" AfterTargets="Build">
-    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" WorkingDirectory="../../nswag/document-generator" Command="$(NSwagExe_Net90) run openapi.nswag /variables:Configuration=$(Configuration),Project=$(MSBuildProjectDirectory)/$(MSBuildProjectFile),MsBuildOutputPath=$(MSBuildProjectDirectory)/$(OutDir)" />
+    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" WorkingDirectory="../../nswag/document-generator" Command="$(NSwagExe_Net90) run openapi.nswag &quot;/variables:Configuration=$(Configuration),Project=$(MSBuildProjectDirectory.Replace('\','/'))/$(MSBuildProjectFile),MsBuildOutputPath=$(MSBuildProjectDirectory.Replace('\','/'))/$(OutDir.Replace('\','/'))&quot;" />
   </Target>
 
 </Project>
