@@ -1,6 +1,23 @@
-@for (message of paginatedMessages()?.items; track message.id) {
-  <p>{{message.content}}</p>
-}
+<div class="flex flex-col w-full">
+  <div class="flex justify-between items-center">
+    <div class="tabs tabs-box tabs-lg text-primary w-fit">
+      @for (tab of tabs; track $index) {
+        <button role="tab" class="tab"
+          [class.tab-active]="container === tab.value"
+          (click)="setContainer(tab.value)"
+        >
+          {{tab.label}}
+        </button>
+      }
+    </div>
+    @if (paginatedMessages()?.metadata; as metadata) {
+      <app-paginator
+        [hidden]="metadata.totalCount === 0"
+        [pageNumber]="metadata.currentPage"
+        [pageSize]="metadata.pageSize"
+        [totalCount]="metadata.totalCount"
+        [totalPages]="metadata.totalPages"
+        (pageChange)="onPageChange($event)"
 
       />
     }
@@ -27,7 +44,7 @@
           <td class="w-2/9">
             <div class="flex items-center gap-3">
               <div class="h-12 w-12">
-                <img class="rounded-full" src="{{isInbox ? message.senderImageUrl : message.recipientImageUrl}}" alt="member">
+                <img class="rounded-full" src="{{isInbox ? message.senderImageUrl || './user.jpg' : message.recipientImageUrl || './user.jpg' }}" alt="member">
               </div>
               <div>{{isInbox ? message.senderDisplayName : message.recipientDisplayName}}</div>
             </div>

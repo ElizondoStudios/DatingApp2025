@@ -26,15 +26,6 @@ tests {
   bru.setVar('token', data.token);
 }
 
-tests {
-  test("Should be able to login", function() {
-    expect(res.getStatus()).to.equal(200);
-  });
-  
-  const data = res.body;
-  bru.setEnvVar('arenitaToken', data.token);
-}
-
 settings {
   encodeUrl: true
   timeout: 0

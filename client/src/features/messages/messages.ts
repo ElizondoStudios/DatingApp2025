@@ -20,6 +20,11 @@ export class Messages implements OnInit {
   protected pageSize = 10;
   protected paginatedMessages = signal<PaginationResult<Message> | null>(null);
 
+  tabs = [
+    { label: 'Inbox', value: 'Inbox' },
+    { label: 'Outbox', value: 'Outbox' }
+  ]
+
   ngOnInit(): void {
     this.loadMessages()
   }
